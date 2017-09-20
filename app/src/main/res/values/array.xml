@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="comic_category">
+        <item>모두보기</item>
+        <item>연재 중</item>
+        <item>완결</item>
+    </string-array>
+</resources>
