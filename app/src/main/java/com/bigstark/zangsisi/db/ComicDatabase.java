@@ -100,13 +100,12 @@ public abstract class ComicDatabase extends RoomDatabase {
                     continue;
                 }
 
-                Log.v("TAG", episode.toString());
-
                 inserts.add(episode);
             } else {
                 updates.add(episode);
             }
         }
+
 
 
         getComicDao().deleteEpisodes(deletes);
