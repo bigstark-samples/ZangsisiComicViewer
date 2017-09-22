@@ -45,7 +45,7 @@ public class EpisodeActivity extends AppCompatActivity {
                 }
 
                 ComicDatabase.getInstance().addOrUpdateEpisodes(comicId, items);
-                adapter.setItems(items);
+                adapter.setItems(ComicDatabase.getInstance().getComicDao().getEpisodes(comicId));
             }
 
             @Override
