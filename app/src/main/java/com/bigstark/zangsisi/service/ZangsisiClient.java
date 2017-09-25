@@ -1,17 +1,8 @@
 package com.bigstark.zangsisi.service;
 
-import android.net.Uri;
-import android.text.TextUtils;
-
 import com.bigstark.zangsisi.model.ContentModel;
 import com.bigstark.zangsisi.model.EpisodeModel;
-import com.bigstark.zangsisi.util.Defines;
 import com.bigstark.zangsisi.model.ComicModel;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;

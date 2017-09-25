@@ -2,7 +2,6 @@ package com.bigstark.zangsisi.service;
 
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.bigstark.zangsisi.model.ComicModel;
 import com.bigstark.zangsisi.model.ContentModel;
