@@ -35,7 +35,10 @@
             android:name=".app.episode.EpisodeActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".app.content.ContentsActivity"></activity>
+
+        <activity android:name=".app.content.ContentsActivity"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

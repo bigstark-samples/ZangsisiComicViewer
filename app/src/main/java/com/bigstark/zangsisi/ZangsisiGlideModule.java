@@ -8,5 +8,4 @@ import com.bumptech.glide.module.AppGlideModule;
  */
 
 @GlideModule
-public class ZangsisiGlideModule extends AppGlideModule {
-}
+public class ZangsisiGlideModule extends AppGlideModule {}

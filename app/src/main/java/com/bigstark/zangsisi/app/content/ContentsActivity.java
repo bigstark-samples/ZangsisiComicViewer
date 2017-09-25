@@ -1,9 +1,12 @@
 package com.bigstark.zangsisi.app.content;
 
+import android.content.pm.ActivityInfo;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 
 import com.bigstark.zangsisi.R;
 import com.bigstark.zangsisi.db.ComicDatabase;
@@ -15,6 +18,7 @@ import java.util.List;
 
 public class ContentsActivity extends AppCompatActivity {
 
+    private ImageButton btnRotate;
     private ViewPager vpContent;
     private ContentAdapter adapter;
 
@@ -27,6 +31,18 @@ public class ContentsActivity extends AppCompatActivity {
         );
         setContentView(R.layout.activity_contents);
         getSupportActionBar().hide();
+
+        btnRotate = findViewById(R.id.btn_rotate);
+        btnRotate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setRequestedOrientation(
+                        getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT ?
+                                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
+                                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                );
+            }
+        });
 
         vpContent = findViewById(R.id.vp_content);
         vpContent.setOffscreenPageLimit(3);
