@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class ComicListActivity extends AppCompatActivity {
 
-
+    private RecyclerView rvComic;
     private ComicAdapter adapter;
 
 
@@ -30,35 +31,52 @@ public class ComicListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_list);
 
+        rvComic = findViewById(R.id.rv_comic);
+        rvComic.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new ComicAdapter();
+        rvComic.setAdapter(adapter);
+
+
         AppCompatSpinner acsComic = findViewById(R.id.acs_comic);
         acsComic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                List<ComicModel> comicHistories = ComicDatabase.getInstance().getComicDao().getComicHistory();
                 List<ComicModel> comics;
                 switch (i) {
+                    case 0:
+                        comics = ComicDatabase.getInstance().getComicDao().getComics();
+                        break;
+
                     case 1:
-                        comics = ComicDatabase.getInstance().getComicDao().getSerialComics();
+                        comics = comicHistories;
                         break;
 
                     case 2:
+                        comics = ComicDatabase.getInstance().getComicDao().getSerialComics();
+                        break;
+
+                    case 3:
                         comics = ComicDatabase.getInstance().getComicDao().getFinishedComics();
                         break;
 
                     default:
                         comics = ComicDatabase.getInstance().getComicDao().getComics();
                 }
-                adapter.setItem(comics);
+
+                adapter.setItem(comics, comicHistories);
+                rvComic.smoothScrollToPosition(0);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
+    }
 
-        RecyclerView rvComic = findViewById(R.id.rv_comic);
-        rvComic.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ComicAdapter();
-        rvComic.setAdapter(adapter);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.updateHistory(ComicDatabase.getInstance().getComicDao().getComicHistory());
     }
 }

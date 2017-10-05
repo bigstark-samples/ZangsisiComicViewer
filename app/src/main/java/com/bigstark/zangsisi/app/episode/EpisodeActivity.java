@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.bigstark.zangsisi.R;
 import com.bigstark.zangsisi.db.ComicDatabase;
@@ -35,7 +36,8 @@ public class EpisodeActivity extends AppCompatActivity {
         rvEpisode.setAdapter(adapter);
 
         List<EpisodeModel> episodes = ComicDatabase.getInstance().getComicDao().getEpisodes(comicId);
-        adapter.setItems(episodes);
+        List<EpisodeModel> episodeHistories = ComicDatabase.getInstance().getComicDao().getEpisodeHistory();
+        adapter.setItems(episodes, episodeHistories);
 
         ZangsisiClient.getInstance().getEpisodes(comicId, new ZangsisiClient.ZangsisiCallback<EpisodeModel>() {
             @Override
@@ -45,7 +47,11 @@ public class EpisodeActivity extends AppCompatActivity {
                 }
 
                 ComicDatabase.getInstance().addOrUpdateEpisodes(comicId, items);
-                adapter.setItems(ComicDatabase.getInstance().getComicDao().getEpisodes(comicId));
+
+                List<EpisodeModel> episodes = ComicDatabase.getInstance().getComicDao().getEpisodes(comicId);
+                List<EpisodeModel> episodeHistories = ComicDatabase.getInstance().getComicDao().getEpisodeHistory();
+
+                adapter.setItems(episodes, episodeHistories);
             }
 
             @Override
@@ -59,5 +65,9 @@ public class EpisodeActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.updateHistory(ComicDatabase.getInstance().getComicDao().getEpisodeHistory());
+    }
 }
