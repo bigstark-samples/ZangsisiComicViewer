@@ -12,7 +12,8 @@ public class ComicModel {
 
 
     @PrimaryKey(autoGenerate = false)
-    private long id;
+    @ColumnInfo(name = "comic_id")
+    private long comicId;
 
     @ColumnInfo(name = "title")
     private String title;
@@ -22,18 +23,18 @@ public class ComicModel {
     private boolean isFinished;
 
 
-    public ComicModel(long id, String title, boolean isFinished) {
-        this.id = id;
+    public ComicModel(long comicId, String title, boolean isFinished) {
+        this.comicId = comicId;
         this.title = title;
         this.isFinished = isFinished;
     }
 
-    public long getId() {
-        return id;
+    public long getComicId() {
+        return comicId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setComicId(long comicId) {
+        this.comicId = comicId;
     }
 
     public String getTitle() {
@@ -59,14 +60,14 @@ public class ComicModel {
 
         ComicModel that = (ComicModel) o;
 
-        if (id != that.id) return false;
+        if (comicId != that.comicId) return false;
         if (isFinished != that.isFinished) return false;
         return title != null ? title.equals(that.title) : that.title == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (comicId ^ (comicId >>> 32));
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (isFinished ? 1 : 0);
         return result;
@@ -75,7 +76,7 @@ public class ComicModel {
     @Override
     public String toString() {
         return "ComicModel{" +
-                "id=" + id +
+                "id=" + comicId +
                 ", title='" + title + '\'' +
                 ", isFinished=" + isFinished +
                 '}';
