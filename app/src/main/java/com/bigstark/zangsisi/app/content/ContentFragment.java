@@ -6,12 +6,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.bigstark.zangsisi.GlideApp;
 import com.bigstark.zangsisi.R;
 import com.bigstark.zangsisi.util.Defines;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.chrisbanes.photoview.PhotoView;
 
 /**
  * Created by bigstark on 2017. 9. 21..
@@ -38,7 +38,7 @@ public class ContentFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImageView ivContent = view.findViewById(R.id.iv_content);
+        PhotoView ivContent = view.findViewById(R.id.iv_content);
 
         String imageUrl = getArguments().getString(Defines.KEY_IMAGE_URL);
 
