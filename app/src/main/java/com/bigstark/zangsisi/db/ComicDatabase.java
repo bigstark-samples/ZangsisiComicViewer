@@ -3,11 +3,13 @@ package com.bigstark.zangsisi.db;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.util.Log;
 
 import com.bigstark.zangsisi.ZangsisiApplication;
 import com.bigstark.zangsisi.model.ComicModel;
 import com.bigstark.zangsisi.model.ContentModel;
+import com.bigstark.zangsisi.model.EpisodeHistoryModel;
 import com.bigstark.zangsisi.model.EpisodeModel;
 
 import java.util.ArrayList;
@@ -21,10 +23,12 @@ import java.util.List;
         entities = {
                 ComicModel.class,
                 EpisodeModel.class,
-                ContentModel.class
+                ContentModel.class,
+                EpisodeHistoryModel.class
         },
-        version = 1
+        version = 2
 )
+@TypeConverters({Converters.class})
 public abstract class ComicDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "zangsisi";
@@ -64,7 +68,7 @@ public abstract class ComicDatabase extends RoomDatabase {
         List<ComicModel> inserts = new ArrayList<>();
         comics.removeAll(previous);
         for (ComicModel comic : comics) {
-            if (getComicDao().getComic(comic.getId()) == null) {
+            if (getComicDao().getComic(comic.getComicId()) == null) {
                 if (inserts.contains(comic)) {
                     continue;
                 }
@@ -95,7 +99,7 @@ public abstract class ComicDatabase extends RoomDatabase {
         List<EpisodeModel> inserts = new ArrayList<>();
         episodes.removeAll(previous);
         for (EpisodeModel episode : episodes) {
-            if (getComicDao().getComic(episode.getId()) == null) {
+            if (getComicDao().getComic(episode.getEpisodeId()) == null) {
                 if (inserts.contains(episode)) {
                     continue;
                 }
@@ -112,5 +116,6 @@ public abstract class ComicDatabase extends RoomDatabase {
         getComicDao().insertEpisodes(inserts);
         getComicDao().updateEpisodes(updates);
     }
+
 
 }

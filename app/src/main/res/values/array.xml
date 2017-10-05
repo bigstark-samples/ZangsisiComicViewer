@@ -2,6 +2,7 @@
 <resources>
     <string-array name="comic_category">
         <item>모두보기</item>
+        <item>정주행 중</item>
         <item>연재 중</item>
         <item>완결</item>
     </string-array>

@@ -15,11 +15,24 @@ import java.util.List;
 public class ComicAdapter extends RecyclerView.Adapter<ComicViewHolder> {
 
     private List<ComicModel> comics = new ArrayList<>();
+    private List<ComicModel> comicHistories = new ArrayList<>();
 
 
-    public void setItem(List<ComicModel> comics) {
+    public void setItem(List<ComicModel> comics, List<ComicModel> comicHistories) {
         this.comics.clear();
         this.comics.addAll(comics);
+
+        this.comicHistories.clear();
+        this.comicHistories.addAll(comicHistories);
+
+        notifyDataSetChanged();
+    }
+
+
+    public void updateHistory(List<ComicModel> comicHistories) {
+        this.comicHistories.clear();
+        this.comicHistories.addAll(comicHistories);
+
         notifyDataSetChanged();
     }
 
@@ -32,7 +45,7 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicViewHolder> {
 
     @Override
     public void onBindViewHolder(ComicViewHolder holder, int position) {
-        holder.bindItem(comics.get(position));
+        holder.bindItem(comics.get(position), comicHistories.contains(comics.get(position)));
     }
 
 

@@ -12,33 +12,36 @@ import android.arch.persistence.room.Relation;
 @Entity(tableName = "episode",
         foreignKeys = @ForeignKey(
             entity = ComicModel.class,
-            parentColumns = "id",
+            parentColumns = "comic_id",
             childColumns = "comic_id"
         )
 )
 public class EpisodeModel {
 
     @PrimaryKey(autoGenerate = false)
-    private long id;
+    @ColumnInfo(name = "episode_id")
+    private long episodeId;
 
     @ColumnInfo(name = "comic_id")
     private long comicId;
 
-    @ColumnInfo(name = "title")
+    @ColumnInfo(name = "episode")
     private String title;
 
-    public EpisodeModel(long id, long comicId, String title) {
-        this.id = id;
+
+    public EpisodeModel(long episodeId, long comicId, String title) {
+        this.episodeId = episodeId;
         this.comicId = comicId;
         this.title = title;
     }
 
-    public long getId() {
-        return id;
+
+    public long getEpisodeId() {
+        return episodeId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setEpisodeId(long episodeId) {
+        this.episodeId = episodeId;
     }
 
     public long getComicId() {
@@ -65,14 +68,14 @@ public class EpisodeModel {
 
         EpisodeModel that = (EpisodeModel) o;
 
-        if (id != that.id) return false;
+        if (episodeId != that.episodeId) return false;
         if (comicId != that.comicId) return false;
         return title != null ? title.equals(that.title) : that.title == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (episodeId ^ (episodeId >>> 32));
         result = 31 * result + (int) (comicId ^ (comicId >>> 32));
         result = 31 * result + (title != null ? title.hashCode() : 0);
         return result;
@@ -81,7 +84,7 @@ public class EpisodeModel {
     @Override
     public String toString() {
         return "EpisodeModel{" +
-                "id=" + id +
+                "id=" + episodeId +
                 ", comicId=" + comicId +
                 ", title='" + title + '\'' +
                 '}';

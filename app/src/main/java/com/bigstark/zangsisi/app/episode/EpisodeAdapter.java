@@ -16,13 +16,25 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeViewHolder> {
 
 
     private List<EpisodeModel> episodes = new ArrayList<>();
+    private List<EpisodeModel> episodeHistories = new ArrayList<>();
 
 
-    public void setItems(List<EpisodeModel> episodes) {
+    public void setItems(List<EpisodeModel> episodes, List<EpisodeModel> episodeHistories) {
         this.episodes.clear();
         this.episodes.addAll(episodes);
+
+        this.episodeHistories.clear();
+        this.episodeHistories.addAll(episodeHistories);
         notifyDataSetChanged();
     }
+
+
+    public void updateHistory(List<EpisodeModel> episodeHistories) {
+        this.episodeHistories.clear();
+        this.episodeHistories.addAll(episodeHistories);
+        notifyDataSetChanged();
+    }
+
 
 
     @Override
@@ -32,7 +44,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeViewHolder> {
 
     @Override
     public void onBindViewHolder(EpisodeViewHolder holder, int position) {
-        holder.bindItem(episodes.get(position));
+        holder.bindItem(episodes.get(position), episodeHistories.contains(episodes.get(position)));
     }
 
     @Override

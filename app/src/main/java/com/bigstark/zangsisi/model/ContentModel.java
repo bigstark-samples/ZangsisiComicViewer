@@ -12,14 +12,15 @@ import android.arch.persistence.room.PrimaryKey;
         tableName = "content",
         foreignKeys = @ForeignKey(
                 entity = EpisodeModel.class,
-                parentColumns = "id",
+                parentColumns = "episode_id",
                 childColumns = "episode_id"
         )
 )
 public class ContentModel {
 
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    @ColumnInfo(name = "content_id")
+    private long contentId;
 
 
     @ColumnInfo(name = "image_url")
@@ -35,12 +36,12 @@ public class ContentModel {
         this.episodeId = episodeId;
     }
 
-    public long getId() {
-        return id;
+    public long getContentId() {
+        return contentId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setContentId(long contentId) {
+        this.contentId = contentId;
     }
 
     public String getImageUrl() {
@@ -62,7 +63,7 @@ public class ContentModel {
     @Override
     public String toString() {
         return "ContentModel{" +
-                "id=" + id +
+                "id=" + contentId +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", episodeId=" + episodeId +
                 '}';

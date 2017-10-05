@@ -8,6 +8,7 @@ import android.arch.persistence.room.Update;
 
 import com.bigstark.zangsisi.model.ComicModel;
 import com.bigstark.zangsisi.model.ContentModel;
+import com.bigstark.zangsisi.model.EpisodeHistoryModel;
 import com.bigstark.zangsisi.model.EpisodeModel;
 
 import java.util.List;
@@ -30,12 +31,28 @@ public interface ComicDao {
     List<ComicModel> getSerialComics();
 
 
-    @Query("SELECT * FROM comic WHERE id = :id")
+    @Query("SELECT * FROM comic WHERE comic_id = :id")
     ComicModel getComic(long id);
 
 
     @Query("SELECT * FROM episode WHERE comic_id = :comicId")
     List<EpisodeModel> getEpisodes(long comicId);
+
+
+    @Query("SELECT DISTINCT episode_id, comic_id, episode FROM (SELECT * FROM episode INNER JOIN episode_history ON episode_history.episode_id = episode.episode_id)")
+    List<EpisodeModel> getEpisodeHistory();
+
+
+
+    @Query("SELECT DISTINCT comic_id, title, is_finished FROM (SELECT * FROM comic as c "
+            + "INNER JOIN "
+            +   "(SELECT * FROM episode "
+            +       "INNER JOIN episode_history as h "
+            +       "ON h.episode_id = episode.episode_id) "
+            +   "as e "
+            + "ON e.comic_id = c.comic_id)")
+    List<ComicModel> getComicHistory();
+
 
 
     @Query("SELECT * FROM content WHERE episode_id = :episodeId")
@@ -65,6 +82,11 @@ public interface ComicDao {
 
     @Delete
     void deleteEpisodes(List<EpisodeModel> episode);
+
+
+
+    @Insert
+    void insertEpisodeHistory(EpisodeHistoryModel history);
 
 
     @Insert
