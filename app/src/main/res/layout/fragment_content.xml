@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/iv_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
