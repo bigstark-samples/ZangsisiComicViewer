@@ -49,6 +49,7 @@ public class ZangsisiParser {
         Document doc = Jsoup.parse(html);
         Elements comicElements = doc.select(cssQuery);
         List<ComicModel> comics = new ArrayList<>(comicElements.size());
+        List<Long> ids = new ArrayList<>();
         for (Element element : comicElements) {
             String title = element.text();
             String href = element.attr(ATTR_HREF);
@@ -58,9 +59,14 @@ public class ZangsisiParser {
             }
 
             long id = getId(uri);
+            if (ids.contains(id)) {
+                continue;
+            }
 
+            ids.add(id);
             ComicModel comic = new ComicModel(id, title, isFinished);
             comics.add(comic);
+
         }
 
         return comics;
@@ -71,6 +77,7 @@ public class ZangsisiParser {
         Document doc = Jsoup.parse(html);
         Elements episodeElements = doc.select(CSS_QUERY_EPISODES);
         List<EpisodeModel> episodes = new ArrayList<>(episodeElements.size());
+        List<Long> ids = new ArrayList<>();
         for (Element element : episodeElements) {
             String title = element.text();
             String href = element.attr(ATTR_HREF);
@@ -80,7 +87,11 @@ public class ZangsisiParser {
             }
 
             long id = getId(uri);
+            if (ids.contains(id)) {
+                continue;
+            }
 
+            ids.add(id);
             EpisodeModel episode = new EpisodeModel(id, comicId, title);
             episodes.add(episode);
         }

@@ -1,11 +1,14 @@
 package com.bigstark.zangsisi.app.episode;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.bigstark.zangsisi.model.EpisodeModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,6 +25,13 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeViewHolder> {
     public void setItems(List<EpisodeModel> episodes, List<EpisodeModel> episodeHistories) {
         this.episodes.clear();
         this.episodes.addAll(episodes);
+
+        Collections.sort(this.episodes, new Comparator<EpisodeModel>() {
+            @Override
+            public int compare(EpisodeModel episodeModel, EpisodeModel t1) {
+                return (int) (episodeModel.getEpisodeId() - t1.getEpisodeId());
+            }
+        });
 
         this.episodeHistories.clear();
         this.episodeHistories.addAll(episodeHistories);
