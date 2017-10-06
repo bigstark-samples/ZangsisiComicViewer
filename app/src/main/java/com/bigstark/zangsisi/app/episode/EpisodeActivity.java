@@ -1,13 +1,22 @@
 package com.bigstark.zangsisi.app.episode;
 
+import android.content.Intent;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.bigstark.zangsisi.R;
+import com.bigstark.zangsisi.app.content.ContentsActivity;
 import com.bigstark.zangsisi.db.ComicDatabase;
+import com.bigstark.zangsisi.model.ComicModel;
 import com.bigstark.zangsisi.model.EpisodeModel;
 import com.bigstark.zangsisi.service.ZangsisiClient;
 import com.bigstark.zangsisi.util.Defines;
@@ -28,6 +37,31 @@ public class EpisodeActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        ComicModel comic = ComicDatabase.getInstance().getComicDao().getComic(comicId);
+        CollapsingToolbarLayout toolbarLayout = findViewById(R.id.ctl_episode);
+        toolbarLayout.setTitle(comic.getTitle());
+
+
+        TextView btnLastEpisode = findViewById(R.id.btn_episode_last);
+        btnLastEpisode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EpisodeModel lastViewedEpisode = ComicDatabase.getInstance().getComicDao().getLastViewedEpisode(comicId);
+                if (lastViewedEpisode == null) {
+                    return;
+                }
+
+                Intent intent = new Intent(getApplicationContext(), ContentsActivity.class);
+                intent.putExtra(Defines.KEY_EPISODE_ID, lastViewedEpisode.getEpisodeId());
+                startActivity(intent);
+            }
+        });
+
 
         RecyclerView rvEpisode = findViewById(R.id.rv_episode);
         rvEpisode.setLayoutManager(new LinearLayoutManager(this));

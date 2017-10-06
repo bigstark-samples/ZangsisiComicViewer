@@ -30,7 +30,6 @@ public class ContentsActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
         setContentView(R.layout.activity_contents);
-        getSupportActionBar().hide();
 
         btnRotate = findViewById(R.id.btn_rotate);
         btnRotate.setOnClickListener(new View.OnClickListener() {
