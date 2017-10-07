@@ -40,6 +40,11 @@ public interface ComicDao {
 
 
 
+    @Query("SELECT * FROM episode WHERE episode_id = :episodeId")
+    EpisodeModel getEpisode(long episodeId);
+
+
+
     @Query("SELECT * FROM "
             + "(SELECT * FROM episode INNER JOIN episode_history ON episode_history.episode_id = episode.episode_id) as e "
             + "WHERE e.comic_id = :comicId LIMIT 1")

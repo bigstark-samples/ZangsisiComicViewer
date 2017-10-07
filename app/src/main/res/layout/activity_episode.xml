@@ -1,62 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.bigstark.zangsisi.app.episode.EpisodeActivity">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.CoordinatorLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        
-        <android.support.design.widget.AppBarLayout
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        >
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/ctl_episode"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
+            android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:collapsedTitleTextAppearance="@style/EpisodeToolbarCollapsedTextAppearance"
+            app:expandedTitleTextAppearance="@style/EpisodeToolbarExpandedTextAppearance"
+            app:expandedTitleMarginStart="24dp"
+            app:expandedTitleMarginEnd="24dp"
+            app:expandedTitleMarginBottom="80dp"
             >
 
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/ctl_episode"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:collapsedTitleTextAppearance="@style/EpisodeToolbarCollapsedTextAppearance"
-                app:expandedTitleTextAppearance="@style/EpisodeToolbarExpandedTextAppearance"
-                app:expandedTitleMargin="24dp"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="8dp"
+                android:layout_gravity="right|bottom"
+                android:gravity="center"
+                android:orientation="horizontal"
                 >
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
+                <Switch
+                    android:id="@+id/switch_episode_direction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="왼쪽방향"
+                    android:textColor="@android:color/white"
                     />
 
                 <TextView
                     android:id="@+id/btn_episode_last"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="right|bottom"
-                    android:layout_margin="8dp"
-                    android:gravity="center"
+                    android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:background="@drawable/selector_transparent_black"
                     android:text="이어보기"
                     android:textColor="@android:color/white"
                     />
 
-            </android.support.design.widget.CollapsingToolbarLayout>
-        </android.support.design.widget.AppBarLayout>
+            </LinearLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_episode"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
-            />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_episode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
+        />
 
 
-    </android.support.design.widget.CoordinatorLayout>
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

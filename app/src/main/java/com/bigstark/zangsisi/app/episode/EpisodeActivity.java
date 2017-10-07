@@ -1,6 +1,7 @@
 package com.bigstark.zangsisi.app.episode;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bigstark.zangsisi.R;
@@ -20,6 +23,7 @@ import com.bigstark.zangsisi.model.ComicModel;
 import com.bigstark.zangsisi.model.EpisodeModel;
 import com.bigstark.zangsisi.service.ZangsisiClient;
 import com.bigstark.zangsisi.util.Defines;
+import com.bigstark.zangsisi.util.SharedPreferenceUtil;
 
 import java.util.List;
 
@@ -41,10 +45,20 @@ public class EpisodeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         ComicModel comic = ComicDatabase.getInstance().getComicDao().getComic(comicId);
         CollapsingToolbarLayout toolbarLayout = findViewById(R.id.ctl_episode);
         toolbarLayout.setTitle(comic.getTitle());
+
+
+        Switch switchDirection = findViewById(R.id.switch_episode_direction);
+        boolean isLeftDirection = SharedPreferenceUtil.get(Defines.KEY_PREF_DIRECTION + comicId, false);
+        switchDirection.setChecked(isLeftDirection);
+        switchDirection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                SharedPreferenceUtil.put(Defines.KEY_PREF_DIRECTION + comicId, isChecked);
+            }
+        });
 
 
         TextView btnLastEpisode = findViewById(R.id.btn_episode_last);

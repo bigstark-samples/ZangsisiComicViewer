@@ -13,4 +13,7 @@ public class Defines {
 
     public static final String KEY_CURRENT_POSITION = "currentPosition";
 
+
+    public static final String KEY_PREF_DIRECTION = "direction : ";
+
 }

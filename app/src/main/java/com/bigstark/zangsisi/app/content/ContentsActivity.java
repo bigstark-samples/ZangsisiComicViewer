@@ -11,9 +11,12 @@ import android.widget.ImageButton;
 import com.bigstark.zangsisi.R;
 import com.bigstark.zangsisi.db.ComicDatabase;
 import com.bigstark.zangsisi.model.ContentModel;
+import com.bigstark.zangsisi.model.EpisodeModel;
 import com.bigstark.zangsisi.service.ZangsisiClient;
 import com.bigstark.zangsisi.util.Defines;
+import com.bigstark.zangsisi.util.SharedPreferenceUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ContentsActivity extends AppCompatActivity {
@@ -54,15 +57,21 @@ public class ContentsActivity extends AppCompatActivity {
             finish();
             return;
         }
-
+        EpisodeModel episode = ComicDatabase.getInstance().getComicDao().getEpisode(episodeId);
         List<ContentModel> contents = ComicDatabase.getInstance().getComicDao().getContents(episodeId);
+
+        boolean isLeftDirection = SharedPreferenceUtil.get(Defines.KEY_PREF_DIRECTION + episode.getComicId(), false);
+        if (isLeftDirection) {
+            Collections.reverse(contents);
+        }
+
         if (contents.size() == 0) {
             getContents(episodeId);
         } else {
             adapter.setItems(contents);
         }
 
-        int currentPosition = 0;
+        int currentPosition = isLeftDirection ? contents.size() - 1 : 0;
         if (savedInstanceState != null) {
             currentPosition = savedInstanceState.getInt(Defines.KEY_CURRENT_POSITION);
         }
@@ -71,7 +80,7 @@ public class ContentsActivity extends AppCompatActivity {
         vpContent.setCurrentItem(currentPosition);
     }
 
-    private void getContents(long episodeId) {
+    private void getContents(final long episodeId) {
         ZangsisiClient.getInstance().getContents(episodeId, new ZangsisiClient.ZangsisiCallback<ContentModel>() {
             @Override
             public void onSuccess(List<ContentModel> items) {
@@ -80,7 +89,17 @@ public class ContentsActivity extends AppCompatActivity {
                 }
 
                 ComicDatabase.getInstance().getComicDao().insertContents(items);
+
+                EpisodeModel episode = ComicDatabase.getInstance().getComicDao().getEpisode(episodeId);
+                boolean isLeftDirection = SharedPreferenceUtil.get(Defines.KEY_PREF_DIRECTION + episode.getComicId(), false);
+                if (isLeftDirection) {
+                    Collections.reverse(items);
+                }
+
                 adapter.setItems(items);
+
+                int currentPosition = isLeftDirection ? items.size() - 1 : 0;
+                vpContent.setCurrentItem(currentPosition);
             }
 
             @Override
