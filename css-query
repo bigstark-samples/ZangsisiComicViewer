@@ -1,0 +1,6 @@
+{
+  "seral_comic" : "#manga-list a",
+  "finished_comic" : ".tx-link",
+  "episode" : "#post a",
+  "contents" : ".contents img"
+}
