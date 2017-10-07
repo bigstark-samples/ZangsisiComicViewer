@@ -47,7 +47,7 @@ public interface ComicDao {
 
     @Query("SELECT * FROM "
             + "(SELECT * FROM episode INNER JOIN episode_history ON episode_history.episode_id = episode.episode_id) as e "
-            + "WHERE e.comic_id = :comicId LIMIT 1")
+            + "WHERE e.comic_id = :comicId ORDER BY e.date DESC LIMIT 1")
     EpisodeModel getLastViewedEpisode(long comicId);
 
 
