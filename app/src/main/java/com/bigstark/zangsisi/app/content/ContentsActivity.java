@@ -90,6 +90,9 @@ public class ContentsActivity extends AppCompatActivity {
         }
 
         final int lastViewedPosition = adapter.getItems().indexOf(lastViewed);
+        if (vpContent.getCurrentItem() < 3 || adapter.getCount() - vpContent.getCurrentItem() < 3) {
+            return;
+        }
 
         new AlertDialog.Builder(this)
                 .setMessage("최근 본 장면으로 이동하시겠습니까?")
