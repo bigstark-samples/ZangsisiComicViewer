@@ -61,6 +61,26 @@ public class ContentModel {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ContentModel that = (ContentModel) o;
+
+        if (contentId != that.contentId) return false;
+        if (episodeId != that.episodeId) return false;
+        return imageUrl != null ? imageUrl.equals(that.imageUrl) : that.imageUrl == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (contentId ^ (contentId >>> 32));
+        result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
+        result = 31 * result + (int) (episodeId ^ (episodeId >>> 32));
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "ContentModel{" +
                 "id=" + contentId +

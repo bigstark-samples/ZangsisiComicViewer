@@ -1,13 +1,16 @@
 package com.bigstark.zangsisi.db;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
+import android.arch.persistence.room.migration.Migration;
 import android.util.Log;
 
 import com.bigstark.zangsisi.ZangsisiApplication;
 import com.bigstark.zangsisi.model.ComicModel;
+import com.bigstark.zangsisi.model.ContentHistoryModel;
 import com.bigstark.zangsisi.model.ContentModel;
 import com.bigstark.zangsisi.model.EpisodeHistoryModel;
 import com.bigstark.zangsisi.model.EpisodeModel;
@@ -24,9 +27,10 @@ import java.util.List;
                 ComicModel.class,
                 EpisodeModel.class,
                 ContentModel.class,
-                EpisodeHistoryModel.class
+                EpisodeHistoryModel.class,
+                ContentHistoryModel.class
         },
-        version = 2
+        version = 3
 )
 @TypeConverters({Converters.class})
 public abstract class ComicDatabase extends RoomDatabase {
@@ -42,7 +46,14 @@ public abstract class ComicDatabase extends RoomDatabase {
                             ZangsisiApplication.getInstance(),
                             ComicDatabase.class,
                             DB_NAME
-                    ).allowMainThreadQueries().build();
+                    ).allowMainThreadQueries()
+                            .addMigrations(new Migration(2, 3) {
+                                @Override
+                                public void migrate(SupportSQLiteDatabase database) {
+                                    database.execSQL("CREATE TABLE IF NOT EXISTS `content_history` (`content_id` INTEGER NOT NULL, `date` INTEGER, PRIMARY KEY(`content_id`, `date`), FOREIGN KEY(`content_id`) REFERENCES `content`(`content_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )");
+                                }
+                            })
+                            .build();
                 }
             }
         }

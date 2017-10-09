@@ -1,15 +1,19 @@
 package com.bigstark.zangsisi.app.content;
 
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import com.bigstark.zangsisi.R;
 import com.bigstark.zangsisi.db.ComicDatabase;
+import com.bigstark.zangsisi.model.ContentHistoryModel;
 import com.bigstark.zangsisi.model.ContentModel;
 import com.bigstark.zangsisi.model.EpisodeModel;
 import com.bigstark.zangsisi.service.ZangsisiClient;
@@ -17,6 +21,7 @@ import com.bigstark.zangsisi.util.Defines;
 import com.bigstark.zangsisi.util.SharedPreferenceUtil;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class ContentsActivity extends AppCompatActivity {
@@ -76,8 +81,33 @@ public class ContentsActivity extends AppCompatActivity {
             currentPosition = savedInstanceState.getInt(Defines.KEY_CURRENT_POSITION);
         }
 
-
         vpContent.setCurrentItem(currentPosition);
+
+
+        ContentModel lastViewed = ComicDatabase.getInstance().getComicDao().getLastViewedContent(episodeId);
+        if (lastViewed == null || savedInstanceState != null) {
+            return;
+        }
+
+        final int lastViewedPosition = adapter.getItems().indexOf(lastViewed);
+
+        new AlertDialog.Builder(this)
+                .setMessage("최근 본 장면으로 이동하시겠습니까?")
+                .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        vpContent.setCurrentItem(lastViewedPosition);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
     }
 
     private void getContents(final long episodeId) {
@@ -117,5 +147,14 @@ public class ContentsActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(Defines.KEY_CURRENT_POSITION, vpContent.getCurrentItem());
         super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        ContentModel lastViewed = adapter.getItems().get(vpContent.getCurrentItem());
+        ContentHistoryModel history = new ContentHistoryModel(lastViewed.getContentId(), new Date(System.currentTimeMillis()));
+        ComicDatabase.getInstance().getComicDao().insertContentHistory(history);
+        super.onDestroy();
     }
 }

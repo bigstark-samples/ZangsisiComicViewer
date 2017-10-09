@@ -31,6 +31,11 @@ public class ContentAdapter extends FragmentStatePagerAdapter {
     }
 
 
+    public List<ContentModel> getItems() {
+        return contents;
+    }
+
+
     @Override
     public Fragment getItem(int position) {
         return ContentFragment.newInstance(contents.get(position).getImageUrl());

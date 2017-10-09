@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.bigstark.zangsisi.model.ComicModel;
+import com.bigstark.zangsisi.model.ContentHistoryModel;
 import com.bigstark.zangsisi.model.ContentModel;
 import com.bigstark.zangsisi.model.EpisodeHistoryModel;
 import com.bigstark.zangsisi.model.EpisodeModel;
@@ -35,6 +36,17 @@ public interface ComicDao {
     ComicModel getComic(long id);
 
 
+    @Query("SELECT DISTINCT comic_id, title, is_finished FROM (SELECT * FROM comic as c "
+            + "INNER JOIN "
+            +   "(SELECT * FROM episode "
+            +       "INNER JOIN episode_history as h "
+            +       "ON h.episode_id = episode.episode_id) "
+            +   "as e "
+            + "ON e.comic_id = c.comic_id)")
+    List<ComicModel> getComicHistory();
+
+
+
     @Query("SELECT * FROM episode WHERE comic_id = :comicId")
     List<EpisodeModel> getEpisodes(long comicId);
 
@@ -56,19 +68,16 @@ public interface ComicDao {
 
 
 
-    @Query("SELECT DISTINCT comic_id, title, is_finished FROM (SELECT * FROM comic as c "
-            + "INNER JOIN "
-            +   "(SELECT * FROM episode "
-            +       "INNER JOIN episode_history as h "
-            +       "ON h.episode_id = episode.episode_id) "
-            +   "as e "
-            + "ON e.comic_id = c.comic_id)")
-    List<ComicModel> getComicHistory();
-
-
 
     @Query("SELECT * FROM content WHERE episode_id = :episodeId")
     List<ContentModel> getContents(long episodeId);
+
+
+
+    @Query("SELECT * FROM "
+            + "(SELECT * FROM content INNER JOIN content_history on content.content_id = content_history.content_id) as c "
+            + "WHERE c.episode_id = :episodeId ORDER BY c.date DESC LIMIT 1")
+    ContentModel getLastViewedContent(long episodeId);
 
 
     @Insert
@@ -103,4 +112,8 @@ public interface ComicDao {
 
     @Insert
     void insertContents(List<ContentModel> contents);
+
+
+    @Insert
+    void insertContentHistory(ContentHistoryModel history);
 }
