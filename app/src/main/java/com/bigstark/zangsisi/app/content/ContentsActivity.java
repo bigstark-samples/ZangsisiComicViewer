@@ -89,8 +89,10 @@ public class ContentsActivity extends AppCompatActivity {
             return;
         }
 
+        Log.v("TAG", "[ContentsActivity] load history : " + lastViewed);
+
         final int lastViewedPosition = adapter.getItems().indexOf(lastViewed);
-        if (vpContent.getCurrentItem() < 3 || adapter.getCount() - vpContent.getCurrentItem() < 3) {
+        if (lastViewedPosition < 3 || adapter.getCount() - lastViewedPosition < 3) {
             return;
         }
 
@@ -157,6 +159,7 @@ public class ContentsActivity extends AppCompatActivity {
     protected void onDestroy() {
         ContentModel lastViewed = adapter.getItems().get(vpContent.getCurrentItem());
         ContentHistoryModel history = new ContentHistoryModel(lastViewed.getContentId(), new Date(System.currentTimeMillis()));
+        Log.v("TAG", "[ContentsActivity] save history : " + history);
         ComicDatabase.getInstance().getComicDao().insertContentHistory(history);
         super.onDestroy();
     }
