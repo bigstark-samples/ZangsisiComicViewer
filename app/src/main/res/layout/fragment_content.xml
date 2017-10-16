@@ -10,7 +10,7 @@
         android:layout_centerInParent="true"
         />
 
-    <com.github.chrisbanes.photoview.PhotoView
+    <me.relex.photodraweeview.PhotoDraweeView
         android:id="@+id/iv_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

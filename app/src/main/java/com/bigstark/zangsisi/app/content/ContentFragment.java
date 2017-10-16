@@ -1,17 +1,18 @@
 package com.bigstark.zangsisi.app.content;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bigstark.zangsisi.GlideApp;
 import com.bigstark.zangsisi.R;
 import com.bigstark.zangsisi.util.Defines;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.chrisbanes.photoview.PhotoView;
+
+import me.relex.photodraweeview.PhotoDraweeView;
 
 /**
  * Created by bigstark on 2017. 9. 21..
@@ -38,14 +39,16 @@ public class ContentFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        PhotoView ivContent = view.findViewById(R.id.iv_content);
-
         String imageUrl = getArguments().getString(Defines.KEY_IMAGE_URL);
 
-        GlideApp.with(this)
-                .load(imageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .fitCenter()
-                .into(ivContent);
+        PhotoDraweeView ivContent = view.findViewById(R.id.iv_content);
+        ivContent.setPhotoUri(Uri.parse(imageUrl));
+
+        ivContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("TAG","[ContentFragment] onClick");
+            }
+        });
     }
 }
